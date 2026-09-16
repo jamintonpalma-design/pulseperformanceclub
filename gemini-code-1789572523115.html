@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PULSE Performance Club | High-Performance Gym</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --card-bg: #1E1E1E;
+            --accent-neon: #CCFF00;
+            --text-main: #FFFFFF;
+            --text-muted: #A0AEC0;
+            --border-color: #2A2A2A;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-dark); color: var(--text-main); line-height: 1.6; }
+        
+        header { display: flex; justify-content: space-between; align-items: center; padding: 18px 5%; background: rgba(18,18,18,0.95); position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid var(--border-color); backdrop-filter: blur(10px); }
+        .logo { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 1.5rem; letter-spacing: 2px; }
+        .logo span { color: var(--accent-neon); }
+        nav { display: flex; gap: 15px; }
+        nav a { color: var(--text-main); text-decoration: none; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; transition: 0.3s; }
+        nav a:hover { color: var(--accent-neon); }
+
+        .section { padding: 90px 5%; max-width: 1200px; margin: auto; }
+        .section-title { font-family: 'Montserrat', sans-serif; font-size: 2rem; margin-bottom: 40px; border-left: 4px solid var(--accent-neon); padding-left: 15px; text-transform: uppercase; }
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        
+        .card { background-color: var(--card-bg); border-radius: 12px; padding: 30px; border: 1px solid var(--border-color); position: relative; transition: 0.3s; }
+        .card:hover { border-color: var(--accent-neon); transform: translateY(-3px); }
+        .card-img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 20px; }
+
+        .btn-cta { background-color: var(--accent-neon); color: #000; padding: 14px 30px; border-radius: 50px; font-weight: 800; text-decoration: none; font-size: 0.85rem; text-transform: uppercase; display: inline-block; transition: 0.3s; border: none; cursor: pointer; width: 100%; text-align: center; }
+        .btn-cta:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(204,255,0,0.3); }
+
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 20px; background: linear-gradient(180deg, rgba(18,18,18,0.75) 0%, rgba(18,18,18,1) 100%), url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1600&q=80') center/cover; }
+        .hero h1 { font-family: 'Montserrat', sans-serif; font-size: 3.8rem; font-weight: 900; letter-spacing: 2px; margin-bottom: 10px; }
+        .hero p { font-size: 1.25rem; color: var(--text-muted); margin-bottom: 30px; font-style: italic; }
+
+        .card-featured { border: 2px solid var(--accent-neon); }
+        .badge-popular { position: absolute; top: -12px; right: 20px; background: var(--accent-neon); color: #000; font-weight: 800; font-size: 0.7rem; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; }
+        .price { font-size: 2.5rem; font-family: 'Montserrat', sans-serif; font-weight: 900; margin: 15px 0; color: var(--text-main); }
+        .price span { font-size: 1rem; color: var(--text-muted); font-weight: 400; }
+        .price-list { list-style: none; margin-bottom: 25px; }
+        .price-list li { margin-bottom: 10px; color: var(--text-muted); font-size: 0.9rem; }
+        .price-list li::before { content: "✓ "; color: var(--accent-neon); font-weight: bold; }
+
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 15px; }
+        .gallery-item { position: relative; border-radius: 12px; overflow: hidden; height: 260px; border: 1px solid var(--border-color); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .gallery-overlay { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(18,18,18,0.9) 0%, rgba(18,18,18,0) 60%); opacity: 0; transition: opacity 0.3s ease; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; }
+        .gallery-item:hover img { transform: scale(1.1); }
+        .gallery-item:hover .gallery-overlay { opacity: 1; border: 2px solid var(--accent-neon); border-radius: 12px; }
+        .gallery-tag { color: var(--accent-neon); font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        .rating { color: var(--accent-neon); margin-bottom: 15px; font-size: 1.1rem; }
+        .client-info { display: flex; align-items: center; margin-top: 20px; }
+        .client-avatar { width: 45px; height: 45px; border-radius: 50%; margin-right: 15px; object-fit: cover; }
+
+        .product-price { font-family: 'Montserrat', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--accent-neon); margin: 10px 0 15px; }
+
+        .chat-modal { display: none; position: fixed; bottom: 25px; right: 25px; width: 360px; background: #181C24; border: 2px solid var(--accent-neon); border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.8); z-index: 2000; overflow: hidden; animation: slideUp 0.3s ease-out; }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .chat-header { background: #121212; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
+        .chat-status { display: flex; align-items: center; gap: 10px; }
+        .status-dot { width: 10px; height: 10px; background-color: var(--accent-neon); border-radius: 50%; box-shadow: 0 0 8px var(--accent-neon); }
+        .close-chat { background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; }
+        .chat-body { padding: 20px; max-height: 320px; overflow-y: auto; }
+        .chat-bubble { background: #222732; padding: 12px 16px; border-radius: 12px 12px 12px 0; font-size: 0.9rem; color: #E0E6ED; margin-bottom: 15px; border: 1px solid #2D3545; }
+        .chat-actions { display: flex; flex-direction: column; gap: 10px; }
+        .chat-btn-option { background: var(--accent-neon); color: #000; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; text-align: center; transition: 0.2s; display: block; border: none; cursor: pointer; }
+        .chat-btn-secondary { background: transparent; color: var(--text-main); border: 1px solid var(--border-color); }
+        .chat-btn-secondary:hover { border-color: var(--accent-neon); color: var(--accent-neon); }
+
+        footer { background-color: #0A0A0A; padding: 60px 5% 20px; border-top: 1px solid var(--border-color); font-size: 0.9rem; color: var(--text-muted); }
+        .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 40px; max-width: 1200px; margin: auto; margin-bottom: 40px; }
+
+        @media (max-width: 900px) {
+            .hero h1 { font-size: 2.4rem; }
+            nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">PULSE<span>.</span></div>
+        <nav>
+            <a href="#inicio">1. Inicio</a>
+            <a href="#nosotros">2. Nosotros</a>
+            <a href="#zonas">3. Zonas</a>
+            <a href="#planes">4. Planes</a>
+            <a href="#coaching">5. Coaching</a>
+            <a href="#galeria">6. Galería</a>
+            <a href="#reseñas">7. Reseñas</a>
+            <a href="#shop">8. Shop</a>
+            <a href="#contacto">9. Contacto</a>
+        </nav>
+    </header>
+
+    <section id="inicio" class="hero">
+        <h1>PULSE PERFORMANCE CLUB</h1>
+        <p>"Eleva tu ritmo, supera tus límites."</p>
+        <a href="#planes" class="btn-cta" style="width: auto;">¡Conoce nuestros planes!</a>
+    </section>
+
+    <section id="nosotros" class="section">
+        <h2 class="section-title">2. Nosotros</h2>
+        <div class="grid-2">
+            <div class="card">
+                <h3 style="color: var(--accent-neon); margin-bottom: 15px;">NUESTRA MISIÓN</h3>
+                <p>Brindar un espacio integral de entrenamiento y bienestar donde cada persona pueda transformar su estilo de vida, potenciando su fuerza física y mental a través de instalaciones modernas, entrenadores calificados y una comunidad motivadora.</p>
+            </div>
+            <div class="card">
+                <h3 style="color: var(--accent-neon); margin-bottom: 15px;">NUESTRA VISIÓN</h3>
+                <p>Ser el centro de acondicionamiento físico de referencia en la región para el año 2030, reconocido por la innovación en sus programas de entrenamiento, el uso de tecnología aplicada al deporte y el impacto positivo constante en la salud de nuestros miembros.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="zonas" class="section">
+        <h2 class="section-title">3. Zonas de Entrenamiento</h2>
+        <div class="grid-3">
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=600&q=80" class="card-img" alt="Fuerza">
+                <h3 style="color: var(--accent-neon); margin-bottom: 10px;">ZONA DE FUERZA Y PESAS</h3>
+                <p>Equipamiento biomecánico de última generación para hipertrofia, potencia y desarrollo muscular avanzado.</p>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80" class="card-img" alt="Funcional">
+                <h3 style="color: var(--accent-neon); margin-bottom: 10px;">CROSS & CARDIO AREA</h3>
+                <p>Clases guiadas por profesionales para quemar calorías, incrementar agilidad y maximizar tu resistencia.</p>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&q=80" class="card-img" alt="Recovery">
+                <h3 style="color: var(--accent-neon); margin-bottom: 10px;">RECOVERY & WELLNESS</h3>
+                <p>Espacios diseñados para estiramiento asistido, sauna y optimización de la recuperación física post-entreno.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="planes" class="section">
+        <h2 class="section-title">4. Planes de Membresía</h2>
+        <div class="grid-3">
+            <div class="card">
+                <h3>STARTER</h3>
+                <div class="price">$25 <span>/mes</span></div>
+                <ul class="price-list">
+                    <li>Acceso a Zona de Musculación</li>
+                    <li>Vestidores y Lockers privados</li>
+                    <li>App de rutinas básicas</li>
+                </ul>
+                <button class="btn-cta" onclick="openChatBot('Plan STARTER', '$25/mes')">Consultar Plan Starter</button>
+            </div>
+
+            <div class="card card-featured">
+                <div class="badge-popular">Más Popular</div>
+                <h3 style="color: var(--accent-neon);">PULSE PRO</h3>
+                <div class="price">$45 <span>/mes</span></div>
+                <ul class="price-list">
+                    <li>Acceso 24/7 a todas las zonas</li>
+                    <li>Clases grupales ilimitadas</li>
+                    <li>1 Valoración física mensual</li>
+                    <li>Pase para 2 invitados al mes</li>
+                </ul>
+                <button class="btn-cta" onclick="openChatBot('Plan PULSE PRO', '$45/mes')">Unirme a Pro vía Chat</button>
+            </div>
+
+            <div class="card">
+                <h3>ELITE VIP</h3>
+                <div class="price">$75 <span>/mes</span></div>
+                <ul class="price-list">
+                    <li>Todo lo del Plan Pro</li>
+                    <li>Acceso ilimitado a Recovery & Wellness</li>
+                    <li>Plan de Nutrición Personalizado</li>
+                    <li>15% OFF en PULSE Shop</li>
+                </ul>
+                <button class="btn-cta" onclick="openChatBot('Plan ELITE VIP', '$75/mes')">Consultar Beneficios VIP</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="coaching" class="section">
+        <h2 class="section-title">5. Coaching 1-a-1</h2>
+        <div class="card" style="background: linear-gradient(135deg, #1E1E1E 0%, #121212 100%); padding: 40px;">
+            <div class="grid-2" style="align-items: center;">
+                <div>
+                    <h3 style="font-size: 1.8rem; color: var(--accent-neon); margin-bottom: 15px;">ENTRENAMIENTO A TU MEDIDA</h3>
+                    <p style="margin-bottom: 20px;">Alcanza tus objetivos dos veces más rápido con la guía exclusiva de nuestros entrenadores certificados y nutricionistas deportivos.</p>
+                    <ul class="price-list" style="margin-bottom: 30px;">
+                        <li>Evaluación Antropométrica InBody©</li>
+                        <li>Plan de alimentación adaptado a tu estilo de vida</li>
+                        <li>Monitoreo y ajuste semanal de cargas</li>
+                    </ul>
+                    <button class="btn-cta" onclick="openChatBot('Asesoría Personalizada Coaching', 'Gratuita')">Agendar Valoración Gratis</button>
+                </div>
+                <div>
+                    <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=800&q=80" class="card-img" style="height: 300px;" alt="Personal Trainer">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="galeria" class="section">
+        <h2 class="section-title">6. Galería de Atletas en Acción</h2>
+        <p style="color: var(--text-muted); margin-bottom: 30px;">Comunidad, constancia y disciplina diaria en nuestras instalaciones.</p>
+        
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80" alt="Entrenamiento Funcional">
+                <div class="gallery-overlay">
+                    <span class="gallery-tag">Cross & Power</span>
+                    <strong style="font-size: 1.1rem; color: #fff;">Sesión de Alta Intensidad</strong>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=600&q=80" alt="Musculación">
+                <div class="gallery-overlay">
+                    <span class="gallery-tag">Zona Pesada</span>
+                    <strong style="font-size: 1.1rem; color: #fff;">Hipertrofia y Fuerza</strong>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&w=600&q=80" alt="Atleta levantando peso">
+                <div class="gallery-overlay">
+                    <span class="gallery-tag">Powerlifting</span>
+                    <strong style="font-size: 1.1rem; color: #fff;">Enfoque y Dominio</strong>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80" alt="Cardio y Cuerdas">
+                <div class="gallery-overlay">
+                    <span class="gallery-tag">Battle Ropes</span>
+                    <strong style="font-size: 1.1rem; color: #fff;">Resistencia Metabólica</strong>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=600&q=80" alt="Clase Grupal">
+                <div class="gallery-overlay">
+                    <span class="gallery-tag">Clases Grupales</span>
+                    <strong style="font-size: 1.1rem; color: #fff;">Comunidad PULSE</strong>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&q=80" alt="Estiramiento y Recovery">
+                <div class="gallery-overlay">
+                    <span class="gallery-tag">Wellness</span>
+                    <strong style="font-size: 1.1rem; color: #fff;">Recuperación Activa</strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="reseñas" class="section">
+        <h2 class="section-title">7. Reseñas y Casos de Éxito</h2>
+        <div class="grid-3">
+            <div class="card">
+                <div class="rating">★★★★★</div>
+                <p>"El área de Recovery y el acompañamiento de los coaches cambiaron por completo mi rendimiento físico."</p>
+                <div class="client-info">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" class="client-avatar" alt="Camila">
+                    <div>
+                        <strong>Camila R.</strong><br>
+                        <small style="color: var(--text-muted);">Miembro Pro (8 meses)</small>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="rating">★★★★★</div>
+                <p>"La energía de las clases de Cross es increíble. He logrado mis mejores marcas personales en tiempo récord."</p>
+                <div class="client-info">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" class="client-avatar" alt="Mateo">
+                    <div>
+                        <strong>Mateo V.</strong><br>
+                        <small style="color: var(--text-muted);">Miembro VIP (1 año)</small>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="rating">★★★★★</div>
+                <p>"Las asesorías de nutrición personalizadas hicieron la diferencia total en mi recomposición corporal."</p>
+                <div class="client-info">
+                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80" class="client-avatar" alt="Andrea">
+                    <div>
+                        <strong>Andrea G.</strong><br>
+                        <small style="color: var(--text-muted);">Miembro Starter (5 meses)</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="shop" class="section">
+        <h2 class="section-title">8. PULSE Shop</h2>
+        <div class="grid-4">
+            <div class="card" style="text-align: center;">
+                <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=400&q=80" class="card-img" style="height: 160px;" alt="T-Shirt">
+                <h4>Camiseta Oversize</h4>
+                <div class="product-price">$28.00</div>
+                <button class="btn-cta" style="padding: 8px 18px; font-size: 0.8rem;" onclick="openChatBot('Camiseta Oversize PULSE', '$28.00')">Comprar</button>
+            </div>
+            <div class="card" style="text-align: center;">
+                <img src="https://images.unsplash.com/photo-1577705998148-6da4f3963bc8?auto=format&fit=crop&w=400&q=80" class="card-img" style="height: 160px;" alt="Shaker">
+                <h4>Shaker Térmico 750ml</h4>
+                <div class="product-price">$18.00</div>
+                <button class="btn-cta" style="padding: 8px 18px; font-size: 0.8rem;" onclick="openChatBot('Shaker Térmico PULSE', '$18.00')">Comprar</button>
+            </div>
+            <div class="card" style="text-align: center;">
+                <img src="https://images.unsplash.com/photo-1598971639058-fab3c3109a00?auto=format&fit=crop&w=400&q=80" class="card-img" style="height: 160px;" alt="Straps">
+                <h4>Kit Lifting Straps</h4>
+                <div class="product-price">$15.00</div>
+                <button class="btn-cta" style="padding: 8px 18px; font-size: 0.8rem;" onclick="openChatBot('Lifting Straps PULSE', '$15.00')">Comprar</button>
+            </div>
+            <div class="card" style="text-align: center;">
+                <img src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=400&q=80" class="card-img" style="height: 160px;" alt="Hoodie">
+                <h4>Hoodie Heavyweight</h4>
+                <div class="product-price">$45.00</div>
+                <button class="btn-cta" style="padding: 8px 18px; font-size: 0.8rem;" onclick="openChatBot('Hoodie Heavyweight PULSE', '$45.00')">Comprar</button>
+            </div>
+        </div>
+    </section>
+
+    <div id="chatModal" class="chat-modal">
+        <div class="chat-header">
+            <div class="chat-status">
+                <div class="status-dot"></div>
+                <div>
+                    <strong style="font-size: 0.9rem; color: #fff;">Asistente Virtual PULSE</strong><br>
+                    <small style="color: var(--accent-neon); font-size: 0.75rem;">En línea ahora</small>
+                </div>
+            </div>
+            <button class="close-chat" onclick="closeChatBot()">✕</button>
+        </div>
+        <div class="chat-body">
+            <div class="chat-bubble" id="chatMessage">¡Hola! 👋 ¿En qué te puedo ayudar hoy?</div>
+            <div class="chat-actions" id="chatActions"></div>
+        </div>
+    </div>
+
+    <footer id="contacto">
+        <div class="footer-content">
+            <div>
+                <h3 style="color: #fff; margin-bottom: 15px;" class="logo">PULSE<span>.</span></h3>
+                <p>Centro de Acondicionamiento Físico de Alto Rendimiento.</p>
+            </div>
+            <div>
+                <h4 style="color: var(--accent-neon); margin-bottom: 15px;">9. Contacto</h4>
+                <p>📍 Av. Principal Deportivo #45-12</p>
+                <p>📞 +57 300 123 4567</p>
+                <p>✉️ contacto@pulseclub.com</p>
+            </div>
+            <div>
+                <h4 style="color: var(--accent-neon); margin-bottom: 15px;">Horarios de Atención</h4>
+                <p>Lunes a Viernes: 5:00 AM - 10:00 PM</p>
+                <p>Sábados: 6:00 AM - 6:00 PM</p>
+            </div>
+        </div>
+        <p style="text-align: center; border-top: 1px solid var(--border-color); padding-top: 20px;">
+            © 2026 PULSE Performance Club. Diseñado por Jaminton Adrian Palma Castrillon.
+        </p>
+    </footer>
+
+    <script>
+        function openChatBot(itemName, itemPrice) {
+            const modal = document.getElementById('chatModal');
+            const messageBox = document.getElementById('chatMessage');
+            const actionsBox = document.getElementById('chatActions');
+
+            messageBox.innerHTML = `¡Excelente elección! 🏋️‍♂️ Estás a un paso de obtener tu <strong>${itemName}</strong> (${itemPrice}).<br><br>¿Cómo prefieres continuar?`;
+
+            const waText = encodeURIComponent(`Hola PULSE Club, quiero más información para adquirir el ${itemName} (${itemPrice}).`);
+            const waUrl = `https://api.whatsapp.com/send?phone=573001234567&text=${waText}`;
+
+            actionsBox.innerHTML = `
+                <a href="${waUrl}" target="_blank" class="chat-btn-option">💬 Hablar con un Asesor en WhatsApp</a>
+                <button class="chat-btn-option chat-btn-secondary" onclick="alert('¡Excelente! Te reservamos un pase de prueba gratuito para hoy.')">🎟️ Solicitar Pase Gratis de Prueba</button>
+            `;
+
+            modal.style.display = 'block';
+        }
+
+        function closeChatBot() {
+            document.getElementById('chatModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
